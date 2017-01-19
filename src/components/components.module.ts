@@ -1,20 +1,3 @@
 angular.module('app.components', [
-    'app.components.constants',
-    'app.components.timer',
-    'app.components.ui',
-    'app.components.schema-validate',
-    'app.components.analytics',
-    'app.components.pipedrive',
-    'app.components.carousel',
-    'app.components.map-widget',
-    'app.components.content-components',
-    'app.components.api-service',
-    'app.components.msg',
-    'app.components.retreats-widget',
-    'app.components.grant-widget',
-    'app.components.artist-widget',
-    'app.components.retreat-block',
-    'app.components.toolbar',
-    'app.components.modal',
-    'app.components.artist-search'
+
 ]);

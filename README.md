@@ -1,4 +1,4 @@
-# Asylum Arts 2016
+# Mancala
 
 ## Project setup and workflow
 
