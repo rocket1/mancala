@@ -1,0 +1,93 @@
+@import "color-palettes";
+
+/*
+
+These definitions are based in part on the Material Design guidelines here:
+
+    https://www.google.com/design/spec/style/typography.html
+
+See typography.less for one-to-one class versions of each.
+
+*/
+
+@font-base-size: 62.5%;
+@font-body-size: 2.0rem;
+
+@font-weight-light: 200;
+@font-weight-regular: 300;
+@font-weight-medium: 400;
+@font-weight-heavy: 600;
+
+@font-color-dark: @asylum-black;
+
+@alt-font-family: Helvetica, "Bookman", Georgia, "Times New Roman", serif;
+@primary-font: "proxima-nova", @alt-font-family;
+@garamond: "proxima-nova", @alt-font-family;
+
+.html () {
+  font-family: @primary-font;
+  font-size: @font-base-size;
+  line-height: 1.5;
+}
+
+.font-toolbar {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: @font-color-dark;
+  font-family: @primary-font;
+  letter-spacing: 1px;
+}
+
+.font-button {
+  .font-body-2;
+  font-weight: 600;
+}
+
+.font-title-props () {
+  font-size: 3.6rem;
+  font-weight: 600;
+  line-height: 4.8rem;
+  font-family: @primary-font;
+}
+
+.font-title () {
+  .font-title-props ();
+  color: @font-color-dark;
+}
+
+.font-subtitle {
+  font-size: 2.4rem;
+  font-weight: @font-weight-heavy;
+  line-height: 1.4;
+  font-family: @primary-font;
+}
+
+.font-body-2-props () {
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  font-family: @primary-font;
+}
+
+.font-body-2 () {
+  .font-body-2-props ();
+  color: @font-color-dark;
+}
+
+.font-caption-props () {
+  font-size: 1.6rem;
+  font-weight: @font-weight-regular;
+  color: @font-color-dark;
+  line-height: 1rem;
+}
+
+.font-caption () {
+  .font-caption-props ();
+  color: white;
+  font-family: @primary-font;
+  opacity: .75;
+}
+
+.font-caption-mobile () {
+  .font-caption ();
+  font-size: 1.2rem;
+}

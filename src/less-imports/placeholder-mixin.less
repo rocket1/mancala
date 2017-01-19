@@ -1,0 +1,16 @@
+// http://css-tricks.com/snippets/css/style-placeholder-text/
+
+.placeholder (@rules) {
+  &::-webkit-input-placeholder {
+    @rules();
+  }
+  &:-moz-placeholder { /* Firefox 18- */
+    @rules();
+  }
+  &::-moz-placeholder {  /* Firefox 19+ */
+    @rules();
+  }
+  &:-ms-input-placeholder {
+    @rules();
+  }
+}

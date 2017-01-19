@@ -1,0 +1,20 @@
+# Filesystem files
+.DS_Store
+
+# IDE files
+*.iml
+/atlassian-ide-plugin.xml
+/.idea
+/.editorconfig
+/.jshintignore
+/.jshintrc
+
+# Package manager directories
+node_modules
+typings
+
+# Local project stuff that's not for VCS
+/local
+
+# Build output
+/build
