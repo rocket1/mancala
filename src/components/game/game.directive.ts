@@ -35,9 +35,10 @@ module gameModule {
 
             this.$_scope = $scope;
             this.$_timeout = $timeout;
-            this._gameState = new gameModule.GameState();
             this.$_mancalaAI = $mancalaAI;
             this.$_moveService = $moveService;
+
+            this.resetGame();
 
             $scope.$on('clickPit', (e:ng.IAngularEvent, pitNumber:number) => {
 
@@ -60,6 +61,13 @@ module gameModule {
          */
         public getGameState():gameModule.GameState {
             return this._gameState;
+        }
+
+        /**
+         *
+         */
+        public resetGame():void {
+            this._gameState = new gameModule.GameState();
         }
 
         /**
