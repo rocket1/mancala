@@ -28,7 +28,7 @@ module gameModule {
         private $_moveService:gameModule.MoveService;
         private _gamePlayState:GamePlayState;
 
-        public static ANIMATION_INTERVAL:number = 600; // milliseconds.
+        public static ANIMATION_INTERVAL:number = 400; // milliseconds.
 
         /**
          * @ngInject
@@ -52,7 +52,13 @@ module gameModule {
             this.resetGame();
 
             $scope.$on('clickPit', (e:ng.IAngularEvent, pitNumber:number) => {
+
                 e.preventDefault();
+
+                if (this.getGamePlayState() === GamePlayState.MOVE_IN_PROGRESS) {
+                    return false;
+                }
+
                 return this._enterGamePlayState(GamePlayState.MOVE_IN_PROGRESS, this._execMove(pitNumber));
             });
         }
@@ -95,6 +101,7 @@ module gameModule {
                 return this._sleepFunc(() => {
                     return this._runFrames(frames);
                 })
+
                     .then(() => {
 
                         this._gameState.incrTurn();
@@ -107,8 +114,9 @@ module gameModule {
 
                         }, GameController.ANIMATION_INTERVAL * 2);
                     })
-                    .finally(() => {
-                        this._gameState.incrTurn();
+
+                    .then(() => {
+                        return this.$_q.when(this._gameState.incrTurn());
                     });
             });
         }
