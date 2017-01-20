@@ -21,7 +21,7 @@ module gameModule {
         private $_mancalaAI:mancalaAIModule.MancalAIService;
         private $_moveService:gameModule.MoveService;
 
-        public static ANIMATION_INTERVAL:number = 1000;
+        public static ANIMATION_INTERVAL:number = 400; // milliseconds.
 
         /**
          * @ngInject
