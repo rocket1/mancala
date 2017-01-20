@@ -29,6 +29,7 @@ body {
 
   table {
 
+    height: 224px;
     margin-bottom: 24px;
 
     @rad: 16px;
@@ -38,9 +39,14 @@ body {
     background-color: brown;
 
     td {
-      border-radius: @rad / 1.5;
+      border-radius: @rad * 2;
       border: 2px solid brown;
       background-color: white;
+
+      &.store {
+        width: 76px;
+        border-radius: @rad * 3;
+      }
     }
   }
 }
