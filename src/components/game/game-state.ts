@@ -1,5 +1,10 @@
 module gameModule {
 
+    export interface MoveRange {
+        minPitNumber:number,
+        maxPitNumber:number,
+    }
+
     export interface GameStateOptionsInterface {
         initStoneCount?:number;
         pits?:Array<number>;
@@ -99,6 +104,28 @@ module gameModule {
          */
         public static  getPlayer2StorePitNumber() {
             return GameState.PIT_COUNT - 1;
+        }
+
+        /**
+         *
+         * @returns {number}
+         */
+        public static getPlayer1MoveRange():MoveRange {
+            return {
+                minPitNumber: 0,
+                maxPitNumber: GameState.getPlayer1StorePitNumber() - 1
+            }
+        }
+
+        /**
+         *
+         * @returns {number}
+         */
+        public static getPlayer2MoveRange():MoveRange {
+            return {
+                minPitNumber: GameState.getPlayer1StorePitNumber() + 1,
+                maxPitNumber: GameState.getPlayer2StorePitNumber() - 1
+            }
         }
     }
 }
