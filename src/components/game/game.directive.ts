@@ -1,5 +1,10 @@
 module gameModule {
 
+    export enum GamePlayState {
+        IDLE,
+        MOVE_IN_PROGRESS
+    }
+
     export function GameDirective():ng.IDirective {
 
         return {
@@ -21,6 +26,7 @@ module gameModule {
         private _gameState:gameModule.GameState;
         private $_mancalaAI:mancalaAIModule.MancalAIService;
         private $_moveService:gameModule.MoveService;
+        private _gamePlayState:GamePlayState;
 
         public static ANIMATION_INTERVAL:number = 600; // milliseconds.
 
@@ -40,12 +46,32 @@ module gameModule {
             this.$_q = $q;
             this.$_mancalaAI = $mancalaAI;
             this.$_moveService = $moveService;
+            this._gamePlayState = GamePlayState.IDLE;
+
 
             this.resetGame();
 
             $scope.$on('clickPit', (e:ng.IAngularEvent, pitNumber:number) => {
                 e.preventDefault();
-                this._execMove(pitNumber);
+                return this._enterGamePlayState(GamePlayState.MOVE_IN_PROGRESS, this._execMove(pitNumber));
+            });
+        }
+
+        /**
+         *
+         * @param gamePlayState
+         * @param promiseFunc
+         * @returns {IPromise<TResult>}
+         * @private
+         */
+        private _enterGamePlayState(gamePlayState:GamePlayState, promiseFunc:ng.IPromise):ng.IPromise {
+
+            let lastState = this._gamePlayState;
+            this._gamePlayState = gamePlayState;
+            this.$_scope.$apply();
+
+            return promiseFunc.finally(() => {
+                this._gamePlayState = lastState;
             });
         }
 
@@ -57,29 +83,33 @@ module gameModule {
         private _execMove(pitNumber:number):ng.IPromise {
 
             let frames = this.$_moveService.getMoveFrames(pitNumber, this._gameState);
+
+            if (!frames.length) {
+                return this.$_q.when();
+            }
+
             this._gameState = frames.shift();
 
             return this.$_scope.$apply(() => {
 
-                return this._tick(() => {
-
-                    this._runFrames(frames).then(() => {
+                return this._sleepFunc(() => {
+                    return this._runFrames(frames);
+                })
+                    .then(() => {
 
                         this._gameState.incrTurn();
 
-                        return this._tick(() => {
+                        return this._sleepFunc(() => {
 
                             let aiPitNumber = this.$_mancalaAI.move(this._gameState);
-
                             frames = this.$_moveService.getMoveFrames(aiPitNumber, this._gameState);
                             return this._runFrames(frames);
 
                         }, GameController.ANIMATION_INTERVAL * 2);
-
-                    }).then(() => {
+                    })
+                    .finally(() => {
                         this._gameState.incrTurn();
                     });
-                });
             });
         }
 
@@ -89,6 +119,14 @@ module gameModule {
          */
         public getGameState():gameModule.GameState {
             return this._gameState;
+        }
+
+        /**
+         *
+         * @returns {GamePlayState}
+         */
+        public getGamePlayState():gameModule.GamePlayState {
+            return this._gamePlayState;
         }
 
         /**
@@ -109,7 +147,7 @@ module gameModule {
             this._gameState = frames.shift();
 
             if (frames.length) {
-                return this._tick(() => {
+                return this._sleepFunc(() => {
                     return this._runFrames(frames)
                 });
             }
@@ -124,10 +162,18 @@ module gameModule {
          * @returns {IPromise<any>}
          * @private
          */
-        private _tick(func:Function, ms?:number):ng.IPromise {
+        private _sleepFunc(func:Function, ms?:number):ng.IPromise {
             return this.$_timeout(() => {
                 return func();
             }, ms ? ms : GameController.ANIMATION_INTERVAL);
+        }
+
+        /**
+         *
+         * @returns {boolean}
+         */
+        public moveInProgress():boolean {
+            return this._gamePlayState === GamePlayState.MOVE_IN_PROGRESS;
         }
     }
 }
