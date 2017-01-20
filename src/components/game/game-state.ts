@@ -1,7 +1,8 @@
 module gameModule {
 
     export interface GameStateOptionsInterface {
-        initStoneCount:number
+        initStoneCount?:number;
+        pits?:Array<number>;
     }
 
     export interface GameStateInterface {
@@ -13,19 +14,24 @@ module gameModule {
 
         private _turn:gameModule.Turn;
         private _pits:Array<number>;
-        public static defaultStoneCount = 5;
+        public static DEFAULT_STONE_COUNT = 5;
+        public static PIT_COUNT = 14;
 
         constructor(options?:GameStateOptionsInterface) {
 
             this._turn = gameModule.Turn.player1Turn;
-            let stoneCount = (options && options['initStoneCount']) ? options['initStoneCount'] : GameState.defaultStoneCount;
-            this._reset(stoneCount);
+            this._pits = (options && options['pits']) ? options['pits'] : null;
+
+            if (!this._pits) {
+                let stoneCount = (options && options['initStoneCount']) ? options['initStoneCount'] : GameState.DEFAULT_STONE_COUNT;
+                this._reset(stoneCount);
+            }
         }
 
         private _reset(stoneCount:number):void {
 
             this._pits = [];
-            let totalPits = 14;
+            let totalPits = GameState.PIT_COUNT;
 
             for (let i = 0; i < totalPits; ++i) {
                 this._pits[i] = stoneCount;
@@ -38,8 +44,20 @@ module gameModule {
             this._pits[player2Store] = 0;
         }
 
-        public getStoneCount(pit:number) {
-            return this._pits[pit];
+        public getStoneCount(pitNumber:number) {
+            return this._pits[pitNumber];
+        }
+
+        public incrStoneCount(pitNumber:number):void {
+            this._pits[pitNumber] = this._pits[pitNumber] + 1;
+        }
+
+        public clear(pitNumber:number):void {
+            this._pits[pitNumber] = 0;
+        }
+
+        public setStoneCount(pit:number, stoneCount:number):void {
+            this._pits[pit] = stoneCount;
         }
 
         public incrTurn():gameModule.Turn {

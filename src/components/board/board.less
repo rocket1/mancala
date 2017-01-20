@@ -5,19 +5,25 @@ body {
 
 .pit {
 
-  max-width: 100px;
-  display: flex;
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 
   .stone {
 
-    margin: 3px;
+    margin: 2px;
     border-radius: 50%;
 
     @sz: 12px;
     width: @sz;
+    min-width: @sz;
+    max-width: @sz;
     height: @sz;
+    min-height: @sz;
+    max-height: @sz;
 
-    background-color: red;
+    background-color: white;
   }
 }
 
@@ -38,16 +44,26 @@ body {
     border: 2px solid brown;
     background-color: brown;
 
+    tr {
+
+      &.player1 {
+        td:hover {
+          background-color: #ffb97d;
+          cursor: pointer;
+        }
+      }
+    }
+
     td {
 
-      @w: 100px;
+      @w: 50px;
       width: @w;
       min-width: @w;
       max-width: @w;
 
       border-radius: @rad * 2;
       border: 2px solid brown;
-      background-color: white;
+      background-color: #ff9439;
 
       &.store {
         border-radius: @rad * 3;

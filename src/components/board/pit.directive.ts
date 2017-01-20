@@ -6,7 +6,8 @@ module boardModule {
             restrict: 'E',
             templateUrl: 'components/board/pit.html',
             scope: {
-                'stoneCount': '=?'
+                'stoneCount': '=',
+                'pitNumber': '=?'
             },
             bindToController: true,
             controller: PitController,
@@ -22,13 +23,17 @@ module boardModule {
         /**
          * @ngInject
          */
-        constructor($scope:ng.IScope) {
-        }
+        constructor() {}
 
         public getStoneCount():number {
             return this.stoneCount;
         }
 
+        /**
+         * Crappy util hack to get numerical repeat in Angular.
+         * @param num
+         * @returns {any[]}
+         */
         public getNumber(num:number):Array<number> {
             return new Array(num);
         }
