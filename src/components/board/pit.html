@@ -1,3 +1,3 @@
 <div class="pit">
-    {{pitCtrl.getStoneCount()}}
+    <div class="stone" ng-repeat="i in pitCtrl.getNumber(pitCtrl.getStoneCount()) track by $index"></div>
 </div>

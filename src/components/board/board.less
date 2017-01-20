@@ -3,6 +3,24 @@ body {
   padding: 24px;
 }
 
+.pit {
+
+  max-width: 100px;
+  display: flex;
+
+  .stone {
+
+    margin: 3px;
+    border-radius: 50%;
+
+    @sz: 12px;
+    width: @sz;
+    height: @sz;
+
+    background-color: red;
+  }
+}
+
 .board-container {
 
   button {

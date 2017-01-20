@@ -22,10 +22,15 @@ module boardModule {
         /**
          * @ngInject
          */
-        constructor($scope:ng.IScope) {}
+        constructor($scope:ng.IScope) {
+        }
 
         public getStoneCount():number {
             return this.stoneCount;
+        }
+
+        public getNumber(num:number):Array<number> {
+            return new Array(num);
         }
     }
 }
