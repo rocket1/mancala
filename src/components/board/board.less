@@ -39,12 +39,17 @@ body {
     background-color: brown;
 
     td {
+
+      @w: 100px;
+      width: @w;
+      min-width: @w;
+      max-width: @w;
+
       border-radius: @rad * 2;
       border: 2px solid brown;
       background-color: white;
 
       &.store {
-        width: 76px;
         border-radius: @rad * 3;
       }
     }
