@@ -78,8 +78,8 @@ module gameModule {
                 this._gamePlayState = lastState;
             });
         }
-
-        private doAIMove
+        //
+        //private doAIMove
 
         /**
          * @param pitNumber
