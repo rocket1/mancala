@@ -7,7 +7,7 @@ module mancalaAIModule {
         }
 
         public move(gameState:gameModule.GameState):number {
-            return 8;
+            return _.random(7, 12);
         }
     }
 }

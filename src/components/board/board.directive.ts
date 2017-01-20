@@ -1,7 +1,7 @@
 module boardModule {
 
     export interface BoardInterface {
-        getGameState():gameModule.GameState
+        getGameState():gameModule.GameState;
     }
 
     export function BoardDirective() {

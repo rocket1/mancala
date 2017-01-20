@@ -68,9 +68,12 @@ module gameModule {
                         this._gameState.incrTurn();
 
                         return this._tick(() => {
+
                             let aiPitNumber = this.$_mancalaAI.move(this._gameState);
+
                             frames = this.$_moveService.getMoveFrames(aiPitNumber, this._gameState);
                             return this._runFrames(frames);
+
                         }, GameController.ANIMATION_INTERVAL * 2);
 
                     }).then(() => {
@@ -98,6 +101,7 @@ module gameModule {
         /**
          *
          * @param frames
+         * @returns {any}
          * @private
          */
         private _runFrames(frames:Array<gameModule.GameState>):ng.IPromise {

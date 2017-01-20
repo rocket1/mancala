@@ -29,7 +29,7 @@ module gameModule {
          * @returns {boolean}
          * @private
          */
-        private static _isOwnStore(pitNumber:number, turn:gameModule.Turn):boolean {
+        private static _isWrongStore(pitNumber:number, turn:gameModule.Turn):boolean {
             if (turn === gameModule.Turn.player1Turn && pitNumber === GameState.getPlayer2StorePitNumber()) {
                 return true;
             }
@@ -71,7 +71,7 @@ module gameModule {
 
             let newPitNumber = MoveService._incrPitNumber(pitNumber);
 
-            if (MoveService._isOwnStore(newPitNumber, turn)) {
+            if (MoveService._isWrongStore(newPitNumber, turn)) {
                 newPitNumber = MoveService._incrPitNumber(newPitNumber);
             }
 
