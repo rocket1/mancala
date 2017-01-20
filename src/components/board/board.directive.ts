@@ -31,6 +31,10 @@ module boardModule {
             this._$scope = $scope;
         }
 
+        /**
+         *
+         * @returns {gameModule.GameState}
+         */
         public getGameState():gameModule.GameState {
             return this.gameState;
         }

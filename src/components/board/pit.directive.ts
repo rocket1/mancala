@@ -25,6 +25,10 @@ module boardModule {
          */
         constructor() {}
 
+        /**
+         *
+         * @returns {number}
+         */
         public getStoneCount():number {
             return this.stoneCount;
         }
