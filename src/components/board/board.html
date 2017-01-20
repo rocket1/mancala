@@ -1,5 +1,26 @@
 <div>
 
-    {{boardCtrl.getGameState().getStoneCount(0)}}
+    <table border="1" cellpadding="10px">
+
+        <tr>
+            <td rowspan="2">{{boardCtrl.getGameState().getStoneCount(13)}}</td>
+            <td>{{boardCtrl.getGameState().getStoneCount(12)}}</td>
+            <td>{{boardCtrl.getGameState().getStoneCount(11)}}</td>
+            <td>{{boardCtrl.getGameState().getStoneCount(10)}}</td>
+            <td>{{boardCtrl.getGameState().getStoneCount(9)}}</td>
+            <td>{{boardCtrl.getGameState().getStoneCount(8)}}</td>
+            <td>{{boardCtrl.getGameState().getStoneCount(7)}}</td>
+            <td rowspan="2">{{boardCtrl.getGameState().getStoneCount(6)}}</td>
+        </tr>
+
+        <tr>
+            <td>{{boardCtrl.getGameState().getStoneCount(0)}}</td>
+            <td>{{boardCtrl.getGameState().getStoneCount(1)}}</td>
+            <td>{{boardCtrl.getGameState().getStoneCount(2)}}</td>
+            <td>{{boardCtrl.getGameState().getStoneCount(3)}}</td>
+            <td>{{boardCtrl.getGameState().getStoneCount(4)}}</td>
+            <td>{{boardCtrl.getGameState().getStoneCount(5)}}</td>
+        </tr>
+
 
 </div>
