@@ -1,5 +1,7 @@
 # Mancala
 
+DEMO ONLINE: http://mancala2.nfshost.com/
+
 ## Project setup and workflow
 
 ### Prerequisites
