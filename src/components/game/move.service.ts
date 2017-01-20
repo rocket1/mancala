@@ -4,6 +4,10 @@ module gameModule {
 
         public getMoveFrames(pitNumber:number, gameState:gameModule.GameState):Array<gameModule.GameState> {
 
+            if (!this.moveIsValid(pitNumber, gameState)) {
+                return [];
+            }
+
             let stoneCount = gameState.getStoneCount(pitNumber);
             let turn = gameState.getTurn();
             let firstFrame = angular.copy(gameState);
@@ -20,6 +24,25 @@ module gameModule {
             }
 
             return frames;
+        }
+
+        public moveIsValid(pitNumber:number, gameState:gameModule.GameState):boolean {
+
+            var turn = gameState.getTurn();
+
+            var moveRange = turn === gameModule.Turn.player1Turn
+                ? gameModule.GameState.getPlayer1MoveRange()
+                : gameModule.GameState.getPlayer2MoveRange();
+
+            if (pitNumber < moveRange.minPitNumber
+                || pitNumber > moveRange.maxPitNumber
+                || gameState.getStoneCount(pitNumber) === 0)
+            {
+                console.info('Move from pit ' + pitNumber + ' not allowed.');
+                return false;
+            }
+
+            return true;
         }
 
         /**
