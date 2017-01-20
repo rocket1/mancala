@@ -17,7 +17,10 @@ module boardModule {
         private clickPit:number;
 
         /**
-         * @ngInject
+         *  @ngInject
+         *
+         * @param $scope
+         * @param $element
          */
         constructor($scope:ng.IScope, $element:ng.IRootElementService) {
             $element.bind('click', (e:Event) => {

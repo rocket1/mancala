@@ -1,6 +1,6 @@
 module gameModule {
 
-    export function GameDirective() {
+    export function GameDirective():ng.IDirective {
 
         return {
             restrict: 'E',
@@ -25,6 +25,11 @@ module gameModule {
 
         /**
          * @ngInject
+         *
+         * @param $scope
+         * @param $timeout
+         * @param $mancalaAI
+         * @param $moveService
          */
         constructor($scope:ng.IScope, $timeout:ng.ITimeoutService, $mancalaAI:mancalaAIModule.MancalAIService, $moveService:gameModule.MoveService) {
 

@@ -26,6 +26,7 @@ module boardModule {
 
         /**
          * @ngInject
+         * @param $scope
          */
         constructor($scope:ng.IScope) {
             this._$scope = $scope;
