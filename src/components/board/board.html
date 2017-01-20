@@ -1,26 +1,27 @@
-<div>
+<div class="board-container">
 
-    <table border="1" cellpadding="10px">
-
+    <table border="2" cellpadding="50px">
         <tr>
-            <td rowspan="2">{{boardCtrl.getGameState().getStoneCount(13)}}</td>
-            <td>{{boardCtrl.getGameState().getStoneCount(12)}}</td>
-            <td>{{boardCtrl.getGameState().getStoneCount(11)}}</td>
-            <td>{{boardCtrl.getGameState().getStoneCount(10)}}</td>
-            <td>{{boardCtrl.getGameState().getStoneCount(9)}}</td>
-            <td>{{boardCtrl.getGameState().getStoneCount(8)}}</td>
-            <td>{{boardCtrl.getGameState().getStoneCount(7)}}</td>
-            <td rowspan="2">{{boardCtrl.getGameState().getStoneCount(6)}}</td>
+            <td rowspan="2"><pit stone-count="boardCtrl.getGameState().getStoneCount(13)"></pit></td>
+            <td><pit stone-count="boardCtrl.getGameState().getStoneCount(12)"></pit></td>
+            <td><pit stone-count="boardCtrl.getGameState().getStoneCount(11)"></pit></td>
+            <td><pit stone-count="boardCtrl.getGameState().getStoneCount(10)"></pit></td>
+            <td><pit stone-count="boardCtrl.getGameState().getStoneCount(9)"></pit></td>
+            <td><pit stone-count="boardCtrl.getGameState().getStoneCount(8)"></pit></td>
+            <td><pit stone-count="boardCtrl.getGameState().getStoneCount(7)"></pit></td>
+            <td rowspan="2"><pit stone-count="boardCtrl.getGameState().getStoneCount(6)"></pit></td>
         </tr>
 
         <tr>
-            <td>{{boardCtrl.getGameState().getStoneCount(0)}}</td>
-            <td>{{boardCtrl.getGameState().getStoneCount(1)}}</td>
-            <td>{{boardCtrl.getGameState().getStoneCount(2)}}</td>
-            <td>{{boardCtrl.getGameState().getStoneCount(3)}}</td>
-            <td>{{boardCtrl.getGameState().getStoneCount(4)}}</td>
-            <td>{{boardCtrl.getGameState().getStoneCount(5)}}</td>
+            <td><pit stone-count="boardCtrl.getGameState().getStoneCount(0)"></pit></td>
+            <td><pit stone-count="boardCtrl.getGameState().getStoneCount(1)"></pit></td>
+            <td><pit stone-count="boardCtrl.getGameState().getStoneCount(2)"></pit></td>
+            <td><pit stone-count="boardCtrl.getGameState().getStoneCount(3)"></pit></td>
+            <td><pit stone-count="boardCtrl.getGameState().getStoneCount(4)"></pit></td>
+            <td><pit stone-count="boardCtrl.getGameState().getStoneCount(5)"></pit></td>
         </tr>
+    </table>
 
+    <button class="btn">New Game</button>
 
 </div>
