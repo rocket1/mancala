@@ -2,6 +2,12 @@ module gameModule {
 
     export class MoveService {
 
+        /**
+         *
+         * @param pitNumber
+         * @param gameState
+         * @returns {Array}
+         */
         public getMoveFrames(pitNumber:number, gameState:gameModule.GameState):Array<gameModule.GameState> {
 
             if (!this.moveIsValid(pitNumber, gameState)) {
@@ -26,6 +32,12 @@ module gameModule {
             return frames;
         }
 
+        /**
+         *
+         * @param pitNumber
+         * @param gameState
+         * @returns {boolean}
+         */
         public moveIsValid(pitNumber:number, gameState:gameModule.GameState):boolean {
 
             var turn = gameState.getTurn();
