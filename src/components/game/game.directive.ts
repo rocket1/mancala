@@ -40,6 +40,7 @@ module gameModule {
 
                 let frames = this.$_moveService.getMoveFrames(pitNumber, this._gameState);
                 this._runFrames(frames);
+                //this._gameState.incrTurn();
                 //
                 //
                 //let response = this.$_mancalaAI.move(this._gameState);

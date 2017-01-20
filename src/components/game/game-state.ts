@@ -28,45 +28,77 @@ module gameModule {
             }
         }
 
+        /**
+         *
+         * @param stoneCount
+         * @private
+         */
         private _reset(stoneCount:number):void {
 
             this._pits = [];
-            let totalPits = GameState.PIT_COUNT;
 
-            for (let i = 0; i < totalPits; ++i) {
+            for (let i = 0; i < GameState.PIT_COUNT; ++i) {
                 this._pits[i] = stoneCount;
             }
 
-            let player1Store = (totalPits / 2) - 1; // i.e. 6
-            let player2Store = totalPits - 1; // i.e. 13
-
-            this._pits[player1Store] = 0;
-            this._pits[player2Store] = 0;
+            this._pits[GameState.getPlayer1StorePitNumber()] = 0;
+            this._pits[GameState.getPlayer2StorePitNumber()] = 0;
         }
 
-        public getStoneCount(pitNumber:number) {
+        /**
+         *
+         * @param pitNumber
+         * @returns {number}
+         */
+        public getStoneCount(pitNumber:number):number {
             return this._pits[pitNumber];
         }
 
+        /**
+         *
+         * @param pitNumber
+         */
         public incrStoneCount(pitNumber:number):void {
             this._pits[pitNumber] = this._pits[pitNumber] + 1;
         }
 
+        /**
+         *
+         * @param pitNumber
+         */
         public clear(pitNumber:number):void {
             this._pits[pitNumber] = 0;
         }
 
-        public setStoneCount(pit:number, stoneCount:number):void {
-            this._pits[pit] = stoneCount;
-        }
-
-        public incrTurn():gameModule.Turn {
+        /**
+         *
+         */
+        public incrTurn():void {
             this._turn = this._turn === gameModule.Turn.player1Turn ? gameModule.Turn.player2Turn : gameModule.Turn.player1Turn;
-            return this._turn;
         }
 
+        /**
+         *
+         * @returns {gameModule.Turn}
+         */
         public getTurn():gameModule.Turn {
             return this._turn;
+        }
+
+        /**
+         *
+         * @returns {number}
+         */
+        public static getPlayer1StorePitNumber() {
+            return (GameState.PIT_COUNT / 2) - 1;
+        }
+
+        /**
+         *
+         * @returns {number}
+         */
+        public static  getPlayer2StorePitNumber() {
+            return GameState.PIT_COUNT - 1;
         }
     }
 }
