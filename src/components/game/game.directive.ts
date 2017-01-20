@@ -50,7 +50,7 @@ module gameModule {
         }
 
         /**
-         *
+         * TODO: Flatten these promises a bit.
          * @param pitNumber
          * @private
          */
@@ -113,6 +113,13 @@ module gameModule {
             return this.$_q.when();
         }
 
+        /**
+         *
+         * @param func
+         * @param ms
+         * @returns {IPromise<any>}
+         * @private
+         */
         private _tick(func:Function, ms?:number):ng.IPromise {
             return this.$_timeout(() => {
                 return func();
