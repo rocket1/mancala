@@ -1,4 +1,4 @@
 <div>
-    <board game-state="gameCtrl.getGameState()"></board>
+    <board game-state="gameCtrl.getGameState()" unlocked="!gameCtrl.moveInProgress()"></board>
     <input type="submit" class="btn" ng-click="gameCtrl.resetGame()" ng-disabled="gameCtrl.moveInProgress()" value="New Game" />
 </div>

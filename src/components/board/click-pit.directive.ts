@@ -8,11 +8,11 @@ module boardModule {
                 'clickPit': '='
             },
             bindToController: true,
-            controller: PitController
+            controller: ClickPitController
         }
     }
 
-    export class PitController {
+    export class ClickPitController {
 
         private clickPit:number;
 

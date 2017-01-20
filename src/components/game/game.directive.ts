@@ -48,7 +48,6 @@ module gameModule {
             this.$_moveService = $moveService;
             this._gamePlayState = GamePlayState.IDLE;
 
-
             this.resetGame();
 
             $scope.$on('clickPit', (e:ng.IAngularEvent, pitNumber:number) => {
@@ -70,23 +69,23 @@ module gameModule {
          * @returns {IPromise<TResult>}
          * @private
          */
-        private _enterGamePlayState(gamePlayState:GamePlayState, promiseFunc:ng.IPromise):ng.IPromise {
+        private _enterGamePlayState(gamePlayState:GamePlayState, promiseFunc:ng.IPromise<any>):ng.IPromise<any> {
 
             let lastState = this._gamePlayState;
             this._gamePlayState = gamePlayState;
-            this.$_scope.$apply();
 
             return promiseFunc.finally(() => {
                 this._gamePlayState = lastState;
             });
         }
 
+        private doAIMove
+
         /**
-         * TODO: Flatten these promises a bit.
          * @param pitNumber
          * @private
          */
-        private _execMove(pitNumber:number):ng.IPromise {
+        private _execMove(pitNumber:number):ng.IPromise<any> {
 
             let frames = this.$_moveService.getMoveFrames(pitNumber, this._gameState);
 
@@ -150,7 +149,7 @@ module gameModule {
          * @returns {any}
          * @private
          */
-        private _runFrames(frames:Array<gameModule.GameState>):ng.IPromise {
+        private _runFrames(frames:Array<gameModule.GameState>):ng.IPromise<any> {
 
             this._gameState = frames.shift();
 
@@ -170,7 +169,7 @@ module gameModule {
          * @returns {IPromise<any>}
          * @private
          */
-        private _sleepFunc(func:Function, ms?:number):ng.IPromise {
+        private _sleepFunc(func:Function, ms?:number):ng.IPromise<any> {
             return this.$_timeout(() => {
                 return func();
             }, ms ? ms : GameController.ANIMATION_INTERVAL);

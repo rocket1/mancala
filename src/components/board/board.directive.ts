@@ -10,7 +10,8 @@ module boardModule {
             restrict: 'E',
             templateUrl: 'components/board/board.html',
             scope: {
-                'gameState': '=?'
+                'gameState': '=?',
+                'unlocked': '=?'
             },
             bindToController: true,
             controller: BoardController,
@@ -23,6 +24,7 @@ module boardModule {
 
         private _$scope:ng.IScope;
         private gameState:gameModule.GameState;
+        private unlocked:boolean;
 
         /**
          * @ngInject
@@ -38,6 +40,14 @@ module boardModule {
          */
         public getGameState():gameModule.GameState {
             return this.gameState;
+        }
+
+        /**
+         *
+         * @returns {boolean}
+         */
+        public isUnlocked():boolean {
+            return this.unlocked;
         }
     }
 }
