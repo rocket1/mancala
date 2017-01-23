@@ -78,8 +78,22 @@ module gameModule {
                 this._gamePlayState = lastState;
             });
         }
-        //
-        //private doAIMove
+
+        /**
+         *
+         * @param gameState
+         * @returns {ng.IPromise<any>}
+         */
+        private doAIMove(gameState:GameState):ng.IPromise<any> {
+
+            return this._sleepFunc(() => {
+
+                let aiPitNumber = this.$_mancalaAI.move(gameState);
+                let frames = this.$_moveService.getMoveFrames(aiPitNumber, gameState);
+                return this._runFrames(frames);
+
+            }, GameController.ANIMATION_INTERVAL * 2);
+        }
 
         /**
          * @param pitNumber
@@ -103,19 +117,15 @@ module gameModule {
 
                     .then(() => {
 
-                        this._gameState.incrTurn();
+                        if (this._gameState.getTurn() === Turn.player2Turn) {
 
-                        return this._sleepFunc(() => {
-
-                            let aiPitNumber = this.$_mancalaAI.move(this._gameState);
-                            frames = this.$_moveService.getMoveFrames(aiPitNumber, this._gameState);
-                            return this._runFrames(frames);
-
-                        }, GameController.ANIMATION_INTERVAL * 2);
-                    })
-
-                    .then(() => {
-                        return this.$_q.when(this._gameState.incrTurn());
+                            return this._sleepFunc(() => {
+                                return this.doAIMove(this._gameState);
+                            })
+                        }
+                        else {
+                            return this.$_q.when();
+                        }
                     });
             });
         }

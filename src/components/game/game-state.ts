@@ -62,6 +62,15 @@ module gameModule {
         /**
          *
          * @param pitNumber
+         * @returns {number}
+         */
+        public setStoneCount(pitNumber:number, stoneCount:number):void {
+            this._pits[pitNumber] = stoneCount;
+        }
+
+        /**
+         *
+         * @param pitNumber
          */
         public incrStoneCount(pitNumber:number):void {
             this._pits[pitNumber] = this._pits[pitNumber] + 1;
@@ -102,8 +111,24 @@ module gameModule {
          *
          * @returns {number}
          */
-        public static  getPlayer2StorePitNumber() {
+        public static getPlayer2StorePitNumber() {
             return GameState.PIT_COUNT - 1;
+        }
+
+        /**
+         *
+         * @returns {number}
+         */
+        public getPlayer1Score():number {
+           return this._pits[GameState.getPlayer1StorePitNumber()];
+        }
+
+        /**
+         *
+         * @returns {number}
+         */
+        public getPlayer2Score():number {
+           return this._pits[GameState.getPlayer2StorePitNumber()];
         }
 
         /**

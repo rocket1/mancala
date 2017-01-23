@@ -6,7 +6,7 @@ module gameModule {
          *
          * @param pitNumber
          * @param gameState
-         * @returns {Array}
+         * @returns {any}
          */
         public getMoveFrames(pitNumber:number, gameState:gameModule.GameState):Array<gameModule.GameState> {
 
@@ -17,7 +17,7 @@ module gameModule {
             let stoneCount = gameState.getStoneCount(pitNumber);
             let turn = gameState.getTurn();
             let firstFrame = angular.copy(gameState);
-            let frames = [];
+            let frames:Array<gameModule.GameState> = [];
 
             firstFrame.clear(pitNumber);
             frames.push(firstFrame);
@@ -29,7 +29,69 @@ module gameModule {
                 frames.push(newFrame);
             }
 
+            // Did last stone land in our store?
+            if (pitNumber === MoveService._getStorePitNumberByTurn(turn)) {
+                // Do nothing, so that when we return it will still be the same players turn.
+            }
+            else {
+
+                let lastGameState = frames[frames.length - 1];
+                let oppositePitNumber = MoveService._getOppositePitNumber(pitNumber);
+                let myLastCount = lastGameState.getStoneCount(pitNumber);
+                let oppositeCount = lastGameState.getStoneCount(oppositePitNumber);
+
+                // Did we land in an empty pit on our side, collecting other players stones across?
+                if (this._moveInRange(pitNumber, turn) && myLastCount === 1 && oppositeCount > 0) {
+
+                    // Draw a frame with your pit being emptied.
+                    let newFrame = angular.copy(lastGameState);
+                    newFrame.clear(pitNumber);
+                    frames.push(newFrame);
+
+                    // Draw a frame with opposite pit being emptied.
+                    let newFrame = angular.copy(newFrame);
+                    newFrame.clear(oppositePitNumber);
+                    frames.push(newFrame);
+
+                    // Draw a frame with the store getting the stones.
+                    let newFrame = angular.copy(newFrame);
+                    let storePitNumber = MoveService._getStorePitNumberByTurn(turn);
+                    let currentScore = newFrame.getStoneCount(storePitNumber);
+                    let newScore = currentScore + myLastCount + oppositeCount;
+                    newFrame.setStoneCount(storePitNumber, newScore);
+
+                }
+
+                // Indicate in the last frame that it is now the other players turn.
+                lastGameState.incrTurn();
+            }
+
             return frames;
+        }
+
+        /**
+         *
+         * @param pitNumber
+         * @private
+         */
+        private static _getOppositePitNumber(pitNumber:number):number {
+            return ((GameState.PIT_COUNT - 1 ) - 1) - pitNumber;
+        }
+
+        /**
+         *
+         * @param pitNumber
+         * @param turn
+         * @returns {boolean}
+         * @private
+         */
+        private _moveInRange(pitNumber:number, turn:gameModule.Turn):boolean {
+
+            var moveRange = turn === gameModule.Turn.player1Turn
+                ? gameModule.GameState.getPlayer1MoveRange()
+                : gameModule.GameState.getPlayer2MoveRange();
+
+            return pitNumber >= moveRange.minPitNumber && pitNumber <= moveRange.maxPitNumber;
         }
 
         /**
@@ -42,15 +104,13 @@ module gameModule {
 
             var turn = gameState.getTurn();
 
-            var moveRange = turn === gameModule.Turn.player1Turn
-                ? gameModule.GameState.getPlayer1MoveRange()
-                : gameModule.GameState.getPlayer2MoveRange();
+            // Is the pitnumber valid for this player?
+            if (!this._moveInRange(pitNumber, turn)) {
+                return false;
+            }
 
-            if (pitNumber < moveRange.minPitNumber
-                || pitNumber > moveRange.maxPitNumber
-                || gameState.getStoneCount(pitNumber) === 0)
-            {
-                console.info('Move from pit ' + pitNumber + ' not allowed.');
+            // Is the pit empty?
+            if (gameState.getStoneCount(pitNumber) === 0) {
                 return false;
             }
 
@@ -65,14 +125,8 @@ module gameModule {
          * @private
          */
         private static _isWrongStore(pitNumber:number, turn:gameModule.Turn):boolean {
-            if (turn === gameModule.Turn.player1Turn && pitNumber === GameState.getPlayer2StorePitNumber()) {
-                return true;
-            }
-            else if (turn === gameModule.Turn.player2Turn && pitNumber === GameState.getPlayer1StorePitNumber()) {
-                return true;
-            }
-
-            return false
+            let otherTurn = turn === gameModule.Turn.player1Turn ? gameModule.Turn.player2Turn : gameModule.Turn.player1Turn;
+            return pitNumber === MoveService._getStorePitNumberByTurn(otherTurn);
         }
 
         /**
@@ -93,6 +147,19 @@ module gameModule {
          */
         private static _incrPitNumber(pitNumber:number):number {
             return MoveService._normalizePitNumber(pitNumber + 1);
+        }
+
+        /**
+         *
+         * @param turn
+         * @returns {number}
+         * @private
+         */
+        private static _getStorePitNumberByTurn(turn:gameModule.Turn):number {
+
+            return turn === gameModule.Turn.player1Turn
+                ? GameState.getPlayer1StorePitNumber()
+                : GameState.getPlayer2StorePitNumber()
         }
 
         /**
