@@ -59,7 +59,7 @@ module gameModule {
                     let currentScore = newFrame.getStoneCount(storePitNumber);
                     let newScore = currentScore + myLastCount + oppositeCount;
                     newFrame.setStoneCount(storePitNumber, newScore);
-
+                    frames.push(newFrame);
                 }
 
                 // Indicate in the last frame that it is now the other players turn.

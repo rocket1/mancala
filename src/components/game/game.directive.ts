@@ -192,5 +192,13 @@ module gameModule {
         public moveInProgress():boolean {
             return this._gamePlayState === GamePlayState.MOVE_IN_PROGRESS;
         }
+
+        /**
+         *
+         * @returns {boolean}
+         */
+        public isPlayer1Turn():boolean {
+            return this._gameState.getTurn() === Turn.player1Turn;
+        }
     }
 }
