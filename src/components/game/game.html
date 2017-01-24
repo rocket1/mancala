@@ -1,16 +1,28 @@
-<div>
+<div class="game">
     <div>
         <board game-state="gameCtrl.getGameState()" unlocked="!gameCtrl.moveInProgress()"></board>
+    </div>
+    <div class="info-section">
+
+        <div ng-if="gameCtrl.isPlayer1Turn()" class="turn-msg">Your Turn</div>
+        <div ng-if="!gameCtrl.isPlayer1Turn()" class="turn-msg">Computer Turn</div>
+
+        <div class="scores">
+            <div class="score">You:
+                <div class="score-value">{{gameCtrl.getGameState().getPlayer1Score()}}</div>
+            </div>
+            <div class="score">Computer:
+                <div class="score-value">{{gameCtrl.getGameState().getPlayer2Score()}}</div>
+            </div>
+        </div>
+
         <input type="submit" class="btn" ng-click="gameCtrl.resetGame()" ng-disabled="gameCtrl.moveInProgress()"
                value="New Game"/>
-    </div>
-    <div>
 
-        <div ng-if="gameCtrl.isPlayer1Turn()">Your Turn</div>
-        <div ng-if="!gameCtrl.isPlayer1Turn()">Computer Turn</div>
+        <div class="help-msg-section">
+            <div class="help-msg"></div>
 
-        <div>Your Score: {{gameCtrl.getGameState().getPlayer1Score()}}</div>
-        <div>Computer Score: {{gameCtrl.getGameState().getPlayer2Score()}}<br></div>
+        </div>
 
     </div>
 </div>
