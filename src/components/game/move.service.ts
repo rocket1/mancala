@@ -11,7 +11,7 @@ module gameModule {
         public getMoveFrames(pitNumber:number, gameState:gameModule.GameState):Array<gameModule.GameState> {
 
             if (!MoveService.moveIsValid(pitNumber, gameState)) {
-                return [];
+                return [gameState];
             }
 
             let stoneCount = gameState.getStoneCount(pitNumber);
