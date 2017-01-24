@@ -58,7 +58,19 @@ module gameModule {
                     return false;
                 }
 
-                return this._enterGamePlayState(GamePlayState.MOVE_IN_PROGRESS, this._execMove(pitNumber));
+                var promise = this._execMove(pitNumber).then(() => {
+
+                    if (this._gameState.getTurn() === Turn.player2Turn) {
+                        return this._sleepFunc(() => {
+                            return this.doAIMove(this._gameState);
+                        }, GameController.ANIMATION_INTERVAL * 2);
+                    }
+                    else {
+                        return this.$_q.when();
+                    }
+                });
+
+                return this._enterGamePlayState(GamePlayState.MOVE_IN_PROGRESS, promise);
             });
         }
 
@@ -86,13 +98,17 @@ module gameModule {
          */
         private doAIMove(gameState:GameState):ng.IPromise<any> {
 
-            return this._sleepFunc(() => {
+            let aiPitNumber = this.$_mancalaAI.move(gameState);
+            let frames = this.$_moveService.getMoveFrames(aiPitNumber, gameState);
 
-                let aiPitNumber = this.$_mancalaAI.move(gameState);
-                let frames = this.$_moveService.getMoveFrames(aiPitNumber, gameState);
-                return this._runFrames(frames);
-
-            }, GameController.ANIMATION_INTERVAL * 2);
+            return this._runFrames(frames).then( () => {
+                if (this._gameState.getTurn() === Turn.player2Turn) {
+                    return this.doAIMove(this._gameState);
+                }
+                else {
+                    return this.$_q.when();
+                }
+            });
         }
 
         /**
@@ -100,34 +116,8 @@ module gameModule {
          * @private
          */
         private _execMove(pitNumber:number):ng.IPromise<any> {
-
             let frames = this.$_moveService.getMoveFrames(pitNumber, this._gameState);
-
-            if (!frames.length) {
-                return this.$_q.when();
-            }
-
-            this._gameState = frames.shift();
-
-            return this.$_scope.$apply(() => {
-
-                return this._sleepFunc(() => {
-                    return this._runFrames(frames);
-                })
-
-                    .then(() => {
-
-                        if (this._gameState.getTurn() === Turn.player2Turn) {
-
-                            return this._sleepFunc(() => {
-                                return this.doAIMove(this._gameState);
-                            })
-                        }
-                        else {
-                            return this.$_q.when();
-                        }
-                    });
-            });
+            return this._runFrames(frames);
         }
 
         /**
@@ -164,9 +154,11 @@ module gameModule {
             this._gameState = frames.shift();
 
             if (frames.length) {
-                return this._sleepFunc(() => {
-                    return this._runFrames(frames)
-                });
+                //return this.$_scope.$apply(() => {
+                    return this._sleepFunc(() => {
+                        return this._runFrames(frames)
+                    });
+                //});
             }
 
             return this.$_q.when();
