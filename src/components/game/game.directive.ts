@@ -2,7 +2,8 @@ module gameModule {
 
     export enum GamePlayState {
         IDLE,
-        MOVE_IN_PROGRESS
+        MOVE_IN_PROGRESS,
+        GAME_OVER
     }
 
     export function GameDirective():ng.IDirective {
@@ -181,6 +182,14 @@ module gameModule {
          *
          * @returns {boolean}
          */
+        public isIdle():boolean {
+            return this._gamePlayState === GamePlayState.IDLE;
+        }
+
+        /**
+         *
+         * @returns {boolean}
+         */
         public moveInProgress():boolean {
             return this._gamePlayState === GamePlayState.MOVE_IN_PROGRESS;
         }
@@ -191,6 +200,14 @@ module gameModule {
          */
         public isPlayer1Turn():boolean {
             return this._gameState.getTurn() === Turn.player1Turn;
+        }
+
+        /**
+         *
+         * @returns {boolean}
+         */
+        public isGameOver():boolean {
+            return this._gameState.gameIsOver();
         }
     }
 }

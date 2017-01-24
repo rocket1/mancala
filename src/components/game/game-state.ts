@@ -13,6 +13,7 @@ module gameModule {
     export interface GameStateInterface {
         getStoneCount(pit:number);
         getTurn():gameModule.Turn;
+        gameIsOver():boolean;
     }
 
     export class GameState implements GameStateInterface {
@@ -48,6 +49,17 @@ module gameModule {
 
             this._pits[GameState.getPlayer1StorePitNumber()] = 0;
             this._pits[GameState.getPlayer2StorePitNumber()] = 0;
+        }
+
+        /**
+         *
+         * @returns {boolean}
+         */
+        public gameIsOver():boolean {
+            var p1Score = this._pits[GameState.getPlayer1StorePitNumber()];
+            var p2Score = this._pits[GameState.getPlayer2StorePitNumber()];
+            var total = GameState.DEFAULT_STONE_COUNT * GameState.PIT_COUNT;
+            return p1Score + p2Score === total;
         }
 
         /**

@@ -16,11 +16,20 @@
             </div>
         </div>
 
-        <input type="submit" class="btn" ng-click="gameCtrl.resetGame()" ng-disabled="gameCtrl.moveInProgress()"
-               value="New Game"/>
+        <div>
+            <input type="submit" class="btn" ng-click="gameCtrl.resetGame()" ng-disabled="gameCtrl.moveInProgress()"
+                   value="New Game"/>
+        </div>
 
         <div class="help-msg-section">
-            <div class="help-msg"></div>
+
+            <div class="help-msg" ng-if="gameCtrl.isIdle()">
+                Make a move!
+            </div>
+
+            <div class="help-msg" ng-if="gameCtrl.moveInProgress()">
+                Move in progress.
+            </div>
 
         </div>
 
