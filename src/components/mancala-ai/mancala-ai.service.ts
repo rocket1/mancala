@@ -15,12 +15,13 @@ module mancalaAIModule {
          * @param $moveService
          * @returns {number}
          */
-        public move(gameState:gameModule.GameState):number {
+        public getBestMove(gameState:gameModule.GameState):number {
             for (let i = 7; i <= 12; ++i) {
                 if (gameModule.MoveService.moveIsValid(i, gameState)) {
                     return i;
                 }
             }
+            return -1;
         }
     }
 }

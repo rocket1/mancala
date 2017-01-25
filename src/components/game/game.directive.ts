@@ -29,7 +29,7 @@ module gameModule {
         private $_moveService:gameModule.MoveService;
         private _gamePlayState:GamePlayState;
 
-        public static ANIMATION_INTERVAL:number = 400; // milliseconds.
+        public static ANIMATION_INTERVAL:number = 100; // milliseconds.
 
         /**
          * @ngInject
@@ -99,17 +99,21 @@ module gameModule {
          */
         private doAIMove(gameState:GameState):ng.IPromise<any> {
 
-            let aiPitNumber = this.$_mancalaAI.move(gameState);
+            let aiPitNumber = this.$_mancalaAI.getBestMove(gameState);
             let frames = this.$_moveService.getMoveFrames(aiPitNumber, gameState);
 
-            return this._runFrames(frames).then( () => {
-                if (this._gameState.getTurn() === Turn.player2Turn) {
-                    return this.doAIMove(this._gameState);
+            return this._runFrames(frames).then((lastFrame) => {
+                if (lastFrame.gameIsOver()) {
+                    this._gamePlayState = GamePlayState.GAME_OVER;
+                }
+                else if (lastFrame.getTurn() === Turn.player2Turn) {
+                    return this.doAIMove(lastFrame);
                 }
                 else {
-                    return this.$_q.when();
+                    return this.$_q.when(lastFrame);
                 }
             });
+
         }
 
         /**
@@ -117,8 +121,14 @@ module gameModule {
          * @private
          */
         private _execMove(pitNumber:number):ng.IPromise<any> {
+
             let frames = this.$_moveService.getMoveFrames(pitNumber, this._gameState);
-            return this._runFrames(frames);
+
+            return this._runFrames(frames).then((lastFrame) => {
+                if (lastFrame.gameIsOver()) {
+                    this._gamePlayState = GamePlayState.GAME_OVER;
+                }
+            });
         }
 
         /**
@@ -152,17 +162,18 @@ module gameModule {
          */
         private _runFrames(frames:Array<gameModule.GameState>):ng.IPromise<any> {
 
+            let lastFrame = frames[frames.length - 1];
             this._gameState = frames.shift();
 
             if (frames.length) {
                 //return this.$_scope.$apply(() => {
-                    return this._sleepFunc(() => {
-                        return this._runFrames(frames)
-                    });
+                return this._sleepFunc(() => {
+                    return this._runFrames(frames)
+                });
                 //});
             }
 
-            return this.$_q.when();
+            return this.$_q.when(lastFrame);
         }
 
         /**
@@ -198,16 +209,16 @@ module gameModule {
          *
          * @returns {boolean}
          */
-        public isPlayer1Turn():boolean {
-            return this._gameState.getTurn() === Turn.player1Turn;
+        public isGameOver():boolean {
+            return this._gamePlayState === GamePlayState.GAME_OVER;
         }
 
         /**
          *
          * @returns {boolean}
          */
-        public isGameOver():boolean {
-            return this._gameState.gameIsOver();
+        public isPlayer1Turn():boolean {
+            return this._gameState.getTurn() === Turn.player1Turn;
         }
     }
 }

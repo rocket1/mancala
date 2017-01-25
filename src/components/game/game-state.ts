@@ -14,12 +14,15 @@ module gameModule {
         getStoneCount(pit:number);
         getTurn():gameModule.Turn;
         gameIsOver():boolean;
+        setGameOver():boolean;
+        clearGameOver():boolean
     }
 
     export class GameState implements GameStateInterface {
 
         private _turn:gameModule.Turn;
         private _pits:Array<number>;
+        private _gameOver:boolean;
         public static DEFAULT_STONE_COUNT = 5;
         public static PIT_COUNT = 14;
 
@@ -27,6 +30,7 @@ module gameModule {
 
             this._turn = gameModule.Turn.player1Turn;
             this._pits = (options && options['pits']) ? options['pits'] : null;
+            this._gameOver = false;
 
             if (!this._pits) {
                 let stoneCount = (options && options['initStoneCount']) ? options['initStoneCount'] : GameState.DEFAULT_STONE_COUNT;
@@ -56,10 +60,23 @@ module gameModule {
          * @returns {boolean}
          */
         public gameIsOver():boolean {
-            var p1Score = this._pits[GameState.getPlayer1StorePitNumber()];
-            var p2Score = this._pits[GameState.getPlayer2StorePitNumber()];
-            var total = GameState.DEFAULT_STONE_COUNT * GameState.PIT_COUNT;
-            return p1Score + p2Score === total;
+            return this._gameOver;
+        }
+
+        /**
+         *
+         * @returns {boolean}
+         */
+        public setGameOver():void {
+            this._gameOver = GameState._gameIsOver(this);
+        }
+
+        /**
+         *
+         * @returns {boolean}
+         */
+        public clearGameOver():void {
+            this._gameOver = false;
         }
 
         /**
@@ -74,7 +91,7 @@ module gameModule {
         /**
          *
          * @param pitNumber
-         * @returns {number}
+         * @param stoneCount
          */
         public setStoneCount(pitNumber:number, stoneCount:number):void {
             this._pits[pitNumber] = stoneCount;
@@ -163,6 +180,37 @@ module gameModule {
                 minPitNumber: GameState.getPlayer1StorePitNumber() + 1,
                 maxPitNumber: GameState.getPlayer2StorePitNumber() - 1
             }
+        }
+
+        /**
+         *
+         * @param gameState
+         * @returns {boolean}
+         * @private
+         */
+        private static _gameIsOver(gameState:GameState):boolean {
+
+            let ranges:Array<MoveRange> = [GameState.getPlayer1MoveRange(), GameState.getPlayer2MoveRange()];
+
+            for (let i = 0, len = ranges.length; i < len; ++i) {
+
+                let gameOver = true;
+                let range = ranges[i];
+                let currentPitNumber = range.minPitNumber;
+                let endPitNumber = range.maxPitNumber;
+
+                for (; currentPitNumber <= endPitNumber; ++currentPitNumber) {
+                    if (gameState.getStoneCount(currentPitNumber) > 0) {
+                        gameOver = false;
+                    }
+                }
+
+                if (gameOver) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

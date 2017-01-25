@@ -60,6 +60,8 @@ module gameModule {
                 lastGameState.incrTurn();
             }
 
+            frames[frames.length - 1].setGameOver();
+
             return frames;
         }
 
