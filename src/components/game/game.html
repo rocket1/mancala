@@ -4,8 +4,11 @@
     </div>
     <div class="info-section">
 
-        <div ng-if="gameCtrl.isPlayer1Turn()" class="turn-msg">Your Turn</div>
-        <div ng-if="!gameCtrl.isPlayer1Turn()" class="turn-msg">Computer Turn</div>
+        <div ng-if="gameCtrl.isPlayer1Turn() && !gameCtrl.isGameOver()" class="turn-msg">Your Turn</div>
+        <div ng-if="!gameCtrl.isPlayer1Turn() && !gameCtrl.isGameOver()" class="turn-msg">Computer Turn</div>
+
+        <div ng-if="gameCtrl.isGameOver() && (gameCtrl.getGameState().getPlayer2Score() > gameCtrl.getGameState().getPlayer1Score())" class="turn-msg">Computer Won!</div>
+        <div ng-if="gameCtrl.isGameOver() && (gameCtrl.getGameState().getPlayer2Score() < gameCtrl.getGameState().getPlayer1Score())" class="turn-msg">You Won!</div>
 
         <div class="scores">
             <div class="score">You:
