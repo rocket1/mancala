@@ -55,23 +55,28 @@ module gameModule {
 
                 e.preventDefault();
 
-                if (this.getGamePlayState() === GamePlayState.MOVE_IN_PROGRESS) {
+                if (this.getGamePlayState() === GamePlayState.MOVE_IN_PROGRESS
+                    || this.getGamePlayState() === GamePlayState.GAME_OVER) {
                     return false;
                 }
 
-                var promise = this._execMove(pitNumber).then(() => {
+                var promise = this._execMove(pitNumber).then((lastFrame) => {
 
-                    if (this._gameState.getTurn() === Turn.player2Turn) {
+                    if (lastFrame.getTurn() === Turn.player2Turn) {
                         return this._sleepFunc(() => {
-                            return this.doAIMove(this._gameState);
+                            return this.doAIMove(lastFrame);
                         }, GameController.ANIMATION_INTERVAL * 2);
                     }
                     else {
-                        return this.$_q.when();
+                        return this.$_q.when(lastFrame);
                     }
                 });
 
-                return this._enterGamePlayState(GamePlayState.MOVE_IN_PROGRESS, promise);
+                return this._enterGamePlayState(GamePlayState.MOVE_IN_PROGRESS, promise).then((lastFrame) => {
+                    if (lastFrame.gameIsOver()) {
+                        this._gamePlayState = GamePlayState.GAME_OVER;
+                    }
+                });
             });
         }
 
@@ -103,10 +108,7 @@ module gameModule {
             let frames = this.$_moveService.getMoveFrames(aiPitNumber, gameState);
 
             return this._runFrames(frames).then((lastFrame) => {
-                if (lastFrame.gameIsOver()) {
-                    this._gamePlayState = GamePlayState.GAME_OVER;
-                }
-                else if (lastFrame.getTurn() === Turn.player2Turn) {
+                if (lastFrame.getTurn() === Turn.player2Turn) {
                     return this.doAIMove(lastFrame);
                 }
                 else {
@@ -123,12 +125,7 @@ module gameModule {
         private _execMove(pitNumber:number):ng.IPromise<any> {
 
             let frames = this.$_moveService.getMoveFrames(pitNumber, this._gameState);
-
-            return this._runFrames(frames).then((lastFrame) => {
-                if (lastFrame.gameIsOver()) {
-                    this._gamePlayState = GamePlayState.GAME_OVER;
-                }
-            });
+            return this._runFrames(frames);
         }
 
         /**
@@ -151,6 +148,7 @@ module gameModule {
          *
          */
         public resetGame():void {
+            this._gamePlayState = GamePlayState.IDLE;
             this._gameState = new gameModule.GameState();
         }
 
